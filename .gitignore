@@ -1,0 +1,36 @@
+# OpsSentinel Git Ignore File
+# ---------------------------------------------------------
+# Python (Byte-compiled / optimized / DLL files)
+__pycache__/
+*.pyc
+*.py[cod]
+*$py.class
+
+# Environment variables
+.env
+.env.*
+
+# Instance folder (Flask runtime DB, configurations)
+instance/
+
+# Legacy DB files
+users.db
+users.json
+
+# Node modules
+node_modules/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo

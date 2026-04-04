@@ -1,0 +1,17 @@
+# OpsSentinel Container Exclusion Layout
+# ---------------------------------------------------------
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+env/
+venv/
+.env
+.env.*
+instance/
+users.db
+users.json
+.vscode/
+.git/
+.gitignore
+README.md
