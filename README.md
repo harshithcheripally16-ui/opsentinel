@@ -6,9 +6,9 @@
 
 ---
 
-## 📸 Screenshots
+## 📸 Preview
 
-![Dashboard Overview](https://via.placeholder.com/1200x600/0d0f14/4ade80?text=Opsentinel+Dashboard+Preview)
+![Opsentinel Screenshot](screenshot.png)
 *High-fidelity monitoring cards displaying real-time CPU, Memory, and Disk metrics.*
 
 ---
