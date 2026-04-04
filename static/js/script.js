@@ -1,24 +1,36 @@
 /* --- Metrics Configuration --- */
+const metricCache = {
+    cpu: { text: null, bar: null, last: null },
+    memory: { text: null, bar: null, last: null },
+    disk: { text: null, bar: null, last: null }
+};
+
 function getColor(value) {
     if (value < 50) return '#4ade80'; // accent-green
     if (value <= 80) return '#fbbf24'; // accent-amber
     return '#ef4444'; // accent-red
 }
 
-function updateMetricData(elementPrefix, value) {
-    const textEl = document.getElementById(`${elementPrefix}-value`);
-    const barEl = document.getElementById(`${elementPrefix}-bar`);
-    
-    if (!textEl || !barEl) return;
+function updateMetricData(prefix, value) {
+    // Cache lookup on first run
+    if (!metricCache[prefix].text) {
+        metricCache[prefix].text = document.getElementById(`${prefix}-value`);
+        metricCache[prefix].bar = document.getElementById(`${prefix}-bar`);
+    }
 
-    // Update text and width
-    textEl.textContent = `${value}%`;
-    barEl.style.width = `${value}%`;
+    const cache = metricCache[prefix];
+    if (!cache.text || !cache.bar) return;
+
+    // Optimization: Skip DOM updates if value hasn't changed
+    if (cache.last === value) return;
+    cache.last = value;
+
+    cache.text.textContent = `${value}%`;
+    cache.bar.style.width = `${value}%`;
     
-    // Apply dynamic colors
     const color = getColor(value);
-    textEl.style.color = color;
-    barEl.style.backgroundColor = color;
+    cache.text.style.color = color;
+    cache.bar.style.backgroundColor = color;
 }
 
 function setOfflineUI() {
@@ -29,13 +41,14 @@ function setOfflineUI() {
     }
 
     ['cpu', 'memory', 'disk'].forEach(prefix => {
-        const textEl = document.getElementById(`${prefix}-value`);
-        const barEl = document.getElementById(`${prefix}-bar`);
+        const cache = metricCache[prefix];
+        // Ensure cache is populated
+        if (!cache.text) updateMetricData(prefix, 0); 
         
-        if (textEl && barEl) {
-            textEl.textContent = '---';
-            textEl.style.color = 'var(--text-muted)';
-            barEl.style.width = '0%';
+        if (cache.text && cache.bar) {
+            cache.text.textContent = '---';
+            cache.text.style.color = 'var(--text-muted)';
+            cache.bar.style.width = '0%';
         }
     });
 }
@@ -54,7 +67,7 @@ async function updateMetrics() {
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         
         const res = await response.json();
-        const data = res.data; // data is wrapped in an envelope by utils.py
+        const data = res.data; 
         
         setOnlineUI();
         
@@ -74,9 +87,13 @@ async function updateMetrics() {
     }
 }
 
-// Initial fetch and interval
+// Initial fetch
 updateMetrics();
-setInterval(updateMetrics, 2000);
+
+// Optimization: Reduce update frequency on mobile (from 2s to 4s)
+const isMobile = window.innerWidth < 768;
+const refreshRate = isMobile ? 4000 : 2000;
+setInterval(updateMetrics, refreshRate);
 
 
 /* --- Chart.js Configuration --- */
@@ -88,6 +105,7 @@ const chartLabels = Array(maxDataPoints).fill('');
 
 const chartOptions = {
     responsive: true,
+    maintainAspectRatio: false,
     animation: { duration: 400, easing: 'linear' },
     scales: {
         y: { 
@@ -130,8 +148,8 @@ const chartDataMap = {};
 
 document.addEventListener('DOMContentLoaded', () => {
     charts.cpu    = createChart('cpuChart',    '#4ade80', cpuData);
-    charts.memory = createChart('memoryChart', '#c084fc', memoryData); // matches memory purple
-    charts.disk   = createChart('diskChart',   '#fbbf24', diskData); // matches disk amber
+    charts.memory = createChart('memoryChart', '#c084fc', memoryData); 
+    charts.disk   = createChart('diskChart',   '#fbbf24', diskData); 
 
     chartDataMap.cpu    = cpuData;
     chartDataMap.memory = memoryData;
@@ -273,4 +291,4 @@ setInterval(() => {
         s.memEl.style.color = getColor(mem);
         s.dskEl.style.color = getColor(dsk);
     });
-}, 2000);
+}, refreshRate); // Sync with dynamic refresh rate

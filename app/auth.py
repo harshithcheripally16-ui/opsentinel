@@ -27,8 +27,8 @@ def _validate_credentials(username, password, check_duplicate=False):
         return "Username and password are required."
     if len(username) < 3:
         return "Username must be at least 3 characters."
-    if len(password) < 6:
-        return "Password must be at least 6 characters."
+    if len(password) < 3:
+        return "Password must be at least 3 characters."
     if check_duplicate and get_user(username):
         return "Username already taken. Please choose another."
     return None

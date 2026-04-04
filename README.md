@@ -17,6 +17,7 @@
 
 - **Real-Time Metrics**: Instant monitoring of CPU, RAM, and Disk using the `psutil` engine.
 - **Visual Analytics (Charts)**: Visual performance tracking over time powered by Chart.js.
+- **Responsive Design**: Full mobile and tablet support with fluid layouts and touch-optimized controls.
 - **Intelligent Alerting**: Dynamic alert banners and historical logging of usage spikes above 80%.
 - **Secure Authentication**: Modular session management with industrial-grade password hashing.
 - **Docker Support**: Built for the container age with full Docker and Docker-Compose compatibility.
