@@ -1,19 +1,21 @@
-const metricCache = {
-    cpu: { text: null, bar: null, last: null },
-    memory: { text: null, bar: null, last: null },
-    disk: { text: null, bar: null, last: null }
-};
+document.addEventListener('DOMContentLoaded', () => {
+    /* --- State Management --- */
+    const metricCache = {
+        cpu: { text: null, bar: null, last: null },
+        memory: { text: null, bar: null, last: null },
+        disk: { text: null, bar: null, last: null }
+    };
 
-// --- Demo Mode Support ---
-const isDemo = window.location.hostname.includes('github.io') || 
-               window.location.protocol === 'file:' || 
-               window.location.pathname.includes('/docs/');
+    // --- Demo Mode Support ---
+    const isDemo = window.location.hostname.includes('github.io') || 
+                   window.location.protocol === 'file:' || 
+                   window.location.pathname.includes('/docs/');
 
-function getColor(value) {
-    if (value < 50) return '#4ade80'; // accent-green
-    if (value <= 80) return '#fbbf24'; // accent-amber
-    return '#ef4444'; // accent-red
-}
+    function getColor(value) {
+        if (value < 50) return '#4ade80'; // accent-green
+        if (value <= 80) return '#fbbf24'; // accent-amber
+        return '#ef4444'; // accent-red
+    }
 
 function animateNumber(element, start, end, duration) {
     let startTimestamp = null;
@@ -270,7 +272,6 @@ function createChart(ctxId, label, color, dataArray) {
 let charts = {};
 const chartDataMap = {};
 
-document.addEventListener('DOMContentLoaded', () => {
     charts.cpu    = createChart('cpuChart',    'CPU Usage',    '#3b82f6', cpuData);
     charts.memory = createChart('memoryChart', 'Memory Usage', '#f97316', memoryData); 
     charts.disk   = createChart('diskChart',   'Disk Usage',   '#22c55e', diskData); 
@@ -290,7 +291,6 @@ document.addEventListener('DOMContentLoaded', () => {
             dashboard.classList.add('visible');
         }
     }
-});
 
 function initScrollAnimations() {
     const observerOptions = {
@@ -391,7 +391,6 @@ function updateAlertBanner(data) {
 /* --- Server Management --- */
 let managedServers = [];
 
-document.addEventListener('DOMContentLoaded', () => {
     const addBtn = document.getElementById('add-server-btn');
     const input = document.getElementById('server-input');
     const list = document.getElementById('server-list');
