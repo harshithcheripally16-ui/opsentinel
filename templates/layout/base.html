@@ -94,6 +94,21 @@
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <!-- Global Failsafe: Ensure preloader always dismisses -->
+    <script>
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                const preloader = document.getElementById('preloader');
+                if (preloader && preloader.style.display !== 'none') {
+                    console.log('[Opsentinel Trace] Global Failsafe: Force dismissing preloader.');
+                    preloader.style.opacity = '0';
+                    setTimeout(() => preloader.style.display = 'none', 500);
+                }
+            }, 3000);
+        });
+    </script>
+
     {% block scripts %}{% endblock %}
 </body>
 
