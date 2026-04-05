@@ -46,8 +46,8 @@ function hidePreloader() {
     }
 }
 
-// Failsafe: Hide preloader after 3s even if metrics take long
-setTimeout(hidePreloader, 3000);
+// Failsafe: Hide preloader after 2s even if metrics take long
+setTimeout(hidePreloader, 2000);
 
 function getMetricColor(prefix) {
     const colors = {
@@ -430,6 +430,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
         addBtn.addEventListener('click', handleAdd);
         input.addEventListener('keypress', (e) => { if (e.key === 'Enter') handleAdd(); });
+    }
+
+    // --- Immediate Render ---
+    // Ensure dashboard components are visible before first fetch
+    const dashboard = document.getElementById('dashboard-section') || document.getElementById('dashboard');
+    if (dashboard) {
+        dashboard.style.display = 'block';
+        dashboard.classList.add('visible');
     }
 
     // --- Initial Flow ---
