@@ -48,6 +48,10 @@ def _fail(error, template):
 
 @auth.route("/signup", methods=["GET", "POST"])
 def signup():
+    if session.get("user"):
+        print(f"[AUTH DEBUG] Active session found for {session['user']}, redirecting away from signup.")
+        return redirect(url_for("main.home"))
+
     if request.method == "POST":
         username, password = _parse_form()
         error = _validate_credentials(username, password, check_duplicate=True)
@@ -63,6 +67,10 @@ def signup():
 
 @auth.route("/login", methods=["GET", "POST"])
 def login():
+    if session.get("user"):
+        print(f"[AUTH DEBUG] Active session found for {session['user']}, redirecting away from login.")
+        return redirect(url_for("main.home"))
+
     if request.method == "POST":
         username, password = _parse_form()
         error = _validate_credentials(username, password)
@@ -71,6 +79,7 @@ def login():
 
         user = get_user(username)
         if user and check_password_hash(user["password"], password):
+            print(f"[AUTH DEBUG] Authentication successful for user: {username}")
             session["user"] = username
             return redirect(url_for("main.home"))
 
