@@ -1,7 +1,7 @@
 # Opsentinel: Standardized DevOps Monitoring
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Demo: Live](https://img.shields.io/badge/Demo-Live-brightgreen?style=for-the-badge&logo=github)](https://yourusername.github.io/Opsentinel/)
+[![Demo: Live](https://img.shields.io/badge/Demo-Live-brightgreen?style=for-the-badge&logo=github)](https://harshithcheripally16-ui.github.io/opsentinel/)
 
 **Opsentinel** is a professional-grade DevOps monitoring tool designed to provide real-time telemetry into server health. Built with Flask, vanilla JavaScript, and Chart.js, it offers a single-pane-of-glass overview of your infrastructure's critical resource usage.
 
@@ -18,7 +18,7 @@
 
 > [!TIP]
 > **Experience Opsentinel instantly!** 
-> 🚀 [Launch the Live Dashboard](https://yourusername.github.io/Opsentinel/)
+> 🚀 [Launch the Live Dashboard](https://harshithcheripally16-ui.github.io/opsentinel/)
 
 *Note: The static preview uses simulated data and is hosted via GitHub Pages for demonstration.*
 
