@@ -152,14 +152,6 @@ async function updateMetrics() {
     }
 }
 
-// Initial fetch
-updateMetrics();
-
-// Optimization: Reduce update frequency on mobile (from 2s to 4s)
-const isMobile = window.innerWidth < 768;
-const refreshRate = isMobile ? 4000 : 2000;
-setInterval(updateMetrics, refreshRate);
-
 
 /* --- Chart.js Configuration --- */
 const maxDataPoints = 20;
@@ -409,20 +401,32 @@ document.addEventListener('DOMContentLoaded', () => {
         addBtn.addEventListener('click', handleAdd);
         input.addEventListener('keypress', (e) => { if (e.key === 'Enter') handleAdd(); });
     }
+
+    // --- Initial Flow ---
+    // Initial fetch
+    updateMetrics();
+
+    // Optimization: Reduce update frequency on mobile (from 2s to 4s)
+    const isMobile = window.innerWidth < 768;
+    const rate = isDemo ? 2500 : (isMobile ? 4000 : 2000);
+    
+    // Primary metrics loop
+    setInterval(updateMetrics, rate);
+
+    // Managed nodes loop
+    setInterval(() => {
+        managedServers.forEach(s => {
+            const cpu = Math.floor(Math.random() * 101);
+            const mem = Math.floor(Math.random() * 101);
+            const dsk = Math.floor(Math.random() * 101);
+
+            s.cpuEl.textContent = `CPU: ${cpu}%`;
+            s.memEl.textContent = `RAM: ${mem}%`;
+            s.dskEl.textContent = `DSK: ${dsk}%`;
+            
+            s.cpuEl.style.color = getColor(cpu);
+            s.memEl.style.color = getColor(mem);
+            s.dskEl.style.color = getColor(dsk);
+        });
+    }, rate);
 });
-
-setInterval(() => {
-    managedServers.forEach(s => {
-        const cpu = Math.floor(Math.random() * 101);
-        const mem = Math.floor(Math.random() * 101);
-        const dsk = Math.floor(Math.random() * 101);
-
-        s.cpuEl.textContent = `CPU: ${cpu}%`;
-        s.memEl.textContent = `RAM: ${mem}%`;
-        s.dskEl.textContent = `DSK: ${dsk}%`;
-        
-        s.cpuEl.style.color = getColor(cpu);
-        s.memEl.style.color = getColor(mem);
-        s.dskEl.style.color = getColor(dsk);
-    });
-}, refreshRate); // Sync with dynamic refresh rate

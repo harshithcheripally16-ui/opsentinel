@@ -137,13 +137,6 @@ function updateMetrics() {
     }
 }
 
-// Initial fetch/generate
-updateMetrics();
-
-// Standardized demo refresh rate: 2.5 seconds (2500ms)
-const refreshRate = 2500; 
-setInterval(updateMetrics, refreshRate);
-
 
 /* --- Chart.js Configuration --- */
 const maxDataPoints = 20;
@@ -389,20 +382,43 @@ document.addEventListener('DOMContentLoaded', () => {
         addBtn.addEventListener('click', handleAdd);
         input.addEventListener('keypress', (e) => { if (e.key === 'Enter') handleAdd(); });
     }
+
+    // --- Initial Flow ---
+    // Initial fetch/generate
+    updateMetrics();
+
+    // Standardized demo refresh rate: 2.5 seconds (2500ms)
+    const rate = 2500; 
+    
+    // Primary metrics loop
+    setInterval(updateMetrics, rate);
+
+    // Managed nodes loop
+    setInterval(() => {
+        managedServers.forEach(s => {
+            const cpu = Math.floor(Math.random() * 101);
+            const mem = Math.floor(Math.random() * 101);
+            const dsk = Math.floor(Math.random() * 101);
+
+            s.cpuEl.textContent = `CPU: ${cpu}%`;
+            s.memEl.textContent = `RAM: ${mem}%`;
+            s.dskEl.textContent = `DSK: ${dsk}%`;
+            
+            s.cpuEl.style.color = getColor(cpu);
+            s.memEl.style.color = getColor(mem);
+            s.dskEl.style.color = getColor(dsk);
+        });
+    }, rate);
+
+    // Demo Mode: Force show dashboard immediately
+    if (isDemo) {
+        console.log('[DEMO] Static mode detected. Showing dashboard immediately.');
+        const landing = document.getElementById('landing-section');
+        const dashboard = document.getElementById('dashboard-section');
+        if (landing) landing.style.display = 'none';
+        if (dashboard) {
+            dashboard.style.display = 'block';
+            dashboard.classList.add('visible');
+        }
+    }
 });
-
-setInterval(() => {
-    managedServers.forEach(s => {
-        const cpu = Math.floor(Math.random() * 101);
-        const mem = Math.floor(Math.random() * 101);
-        const dsk = Math.floor(Math.random() * 101);
-
-        s.cpuEl.textContent = `CPU: ${cpu}%`;
-        s.memEl.textContent = `RAM: ${mem}%`;
-        s.dskEl.textContent = `DSK: ${dsk}%`;
-        
-        s.cpuEl.style.color = getColor(cpu);
-        s.memEl.style.color = getColor(mem);
-        s.dskEl.style.color = getColor(dsk);
-    });
-}, refreshRate); // Sync with dynamic refresh rate
