@@ -152,6 +152,10 @@ async function updateMetrics() {
             updateAlertBanner(data);
         }
         hidePreloader();
+        
+        // Pacing: Schedule next update only after current one finishes
+        const rate = (isDemo ? 2500 : (window.innerWidth < 768 ? 4000 : 2000));
+        setTimeout(updateMetrics, rate);
     }
 }
 
@@ -406,17 +410,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Initial Flow ---
-    // Initial fetch
+    // Start the self-scheduling telemetry cycle
     updateMetrics();
 
-    // Optimization: Reduce update frequency on mobile (from 2s to 4s)
-    const isMobile = window.innerWidth < 768;
-    const rate = isDemo ? 2500 : (isMobile ? 4000 : 2000);
-    
-    // Primary metrics loop
-    setInterval(updateMetrics, rate);
-
-    // Managed nodes loop
+    // Secondary nodes heartbeat (stays interval as it's purely local simulation)
+    const rate = (isDemo ? 2500 : (window.innerWidth < 768 ? 4000 : 2000));
     setInterval(() => {
         managedServers.forEach(s => {
             const cpu = Math.floor(Math.random() * 101);

@@ -137,6 +137,10 @@ function updateMetrics() {
         console.error('Failed to update metrics:', error);
     } finally {
         hidePreloader();
+        
+        // Pacing: Schedule next update only after current one finishes
+        const rate = 2500; 
+        setTimeout(updateMetrics, rate);
     }
 }
 
