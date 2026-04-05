@@ -99,8 +99,12 @@ def login_required(f):
     """Decorator to protect routes from unauthenticated access."""
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        if not session.get("user"):
+        user = session.get("user")
+        if not user:
+            print("[AUTH] Redirecting to login")
             flash("Please sign in to access this page.", "error")
             return redirect(url_for("auth.login"))
+        
+        print(f"[AUTH] User authenticated: {user}")
         return f(*args, **kwargs)
     return decorated_function
