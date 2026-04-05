@@ -121,36 +121,71 @@ const chartLabels = Array(maxDataPoints).fill('');
 const chartOptions = {
     responsive: true,
     maintainAspectRatio: false,
-    animation: { duration: 400, easing: 'linear' },
+    animation: { 
+        duration: 2000, 
+        easing: 'easeOutQuart' 
+    },
     scales: {
         y: { 
             min: 0, max: 100, 
-            grid: { color: '#1e2330' },
-            ticks: { font: { size: 10 }, color: '#475569', callback: v => v + '%' } 
+            grid: { color: 'rgba(255, 255, 255, 0.03)' },
+            ticks: { font: { size: 10, family: 'Inter' }, color: '#64748b', callback: v => v + '%' } 
         },
         x: { 
             display: true,
-            ticks: { font: { size: 9 }, color: '#475569', maxRotation: 45, minRotation: 45 },
-            grid: { color: '#1e2330' }
+            ticks: { font: { size: 9, family: 'Inter' }, color: '#64748b', maxRotation: 45, minRotation: 45 },
+            grid: { color: 'rgba(255, 255, 255, 0.03)' }
         }
     },
-    plugins: { legend: { display: false }, tooltip: { enabled: false } }
+    plugins: { 
+        legend: { 
+            display: true,
+            position: 'top',
+            align: 'end',
+            labels: {
+                boxWidth: 8,
+                boxHeight: 8,
+                usePointStyle: true,
+                pointStyle: 'circle',
+                font: { size: 10, family: 'Outfit', weight: '600' },
+                color: '#94a3b8'
+            }
+        },
+        tooltip: {
+            backgroundColor: 'rgba(15, 23, 42, 0.9)',
+            titleFont: { family: 'Outfit' },
+            bodyFont: { family: 'Inter' },
+            padding: 10,
+            cornerRadius: 8,
+            displayColors: false
+        }
+    }
 };
 
-function createChart(ctxId, color, dataArray) {
+function createChart(ctxId, label, color, dataArray) {
     const canvas = document.getElementById(ctxId);
     if (!canvas) return null;
-    return new Chart(canvas.getContext('2d'), {
+    const ctx = canvas.getContext('2d');
+    
+    // Create a high-fidelity linear gradient
+    const gradient = ctx.createLinearGradient(0, 0, 0, 120);
+    gradient.addColorStop(0, color + '44'); // Top (semi-transparent)
+    gradient.addColorStop(1, color + '00'); // Bottom (invisible)
+
+    return new Chart(ctx, {
         type: 'line',
         data: {
             labels: chartLabels,
             datasets: [{
+                label: label,
                 data: dataArray,
                 borderColor: color,
-                backgroundColor: color + '15',
-                borderWidth: 2,
-                tension: 0.5,
+                backgroundColor: gradient,
+                borderWidth: 3,
+                tension: 0.4, // Smooth curves
                 pointRadius: 0,
+                pointHoverRadius: 4,
+                pointBackgroundColor: color,
                 fill: true
             }]
         },
@@ -162,9 +197,9 @@ let charts = {};
 const chartDataMap = {};
 
 document.addEventListener('DOMContentLoaded', () => {
-    charts.cpu    = createChart('cpuChart',    '#4ade80', cpuData);
-    charts.memory = createChart('memoryChart', '#c084fc', memoryData); 
-    charts.disk   = createChart('diskChart',   '#fbbf24', diskData); 
+    charts.cpu    = createChart('cpuChart',    'CPU Usage',    '#4ade80', cpuData);
+    charts.memory = createChart('memoryChart', 'Memory Usage', '#c084fc', memoryData); 
+    charts.disk   = createChart('diskChart',   'Disk Usage',   '#fbbf24', diskData); 
 
     chartDataMap.cpu    = cpuData;
     chartDataMap.memory = memoryData;
