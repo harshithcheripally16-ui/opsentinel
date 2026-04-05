@@ -9,13 +9,73 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
 
     <!-- Standard Styles -->
     <link rel="stylesheet" href="style.css">
 
     <style>
-        /* Dashboard-specific layout refinements */
+        html { scroll-behavior: smooth; }
+
+        /* Hero Section */
+        .hero-section {
+            padding: 8rem 1.5rem 6rem;
+            text-align: center;
+            background: 
+                radial-gradient(circle at 50% 40%, rgba(74, 222, 128, 0.06) 0%, transparent 60%),
+                radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.03) 0%, transparent 40%);
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 2rem;
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 8vw, 4.5rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+            letter-spacing: -0.04em;
+            background: linear-gradient(to bottom, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(0.9rem, 2vw, 1.1rem);
+            color: var(--accent-green);
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+        }
+
+        .hero-description {
+            max-width: 650px;
+            margin: 0 auto 3rem;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .hero-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: var(--accent-green);
+            color: var(--bg-deep);
+            padding: 1rem 2.5rem;
+            border-radius: 12px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 12px rgba(74, 222, 128, 0.2);
+        }
+
+        .hero-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(74, 222, 128, 0.4);
+            background: #5efa92;
+        }
+
+        /* Existing Dashboard tweaks */
         .content-header { margin-bottom: 2rem; }
 
         .progress-wrapper { 
@@ -115,7 +175,23 @@
         </div>
     </nav>
 
-    <main class="content-wrapper">
+    </nav>
+    
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-subtitle">Real-Time DevOps Monitoring</div>
+        <h1 class="hero-title">Opsentinel</h1>
+        <p class="hero-description">
+            Professional-grade telemetry into your server infrastructure. 
+            Monitor CPU, Memory, and Disk health with zero-latency visual tracking.
+        </p>
+        <a href="#dashboard" class="hero-cta">
+            View Live Dashboard
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>
+        </a>
+    </section>
+
+    <main class="content-wrapper" id="dashboard">
         <header class="content-header">
             <h2 class="section-title">Dashboard Overview</h2>
             <p class="subtitle">Real-Time Server Health Monitor</p>

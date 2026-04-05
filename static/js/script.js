@@ -11,6 +11,19 @@ function getColor(value) {
     return '#ef4444'; // accent-red
 }
 
+function animateNumber(element, start, end, duration) {
+    let startTimestamp = null;
+    const step = (timestamp) => {
+        if (!startTimestamp) startTimestamp = timestamp;
+        const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+        element.textContent = Math.floor(progress * (end - start) + start) + '%';
+        if (progress < 1) {
+            window.requestAnimationFrame(step);
+        }
+    };
+    window.requestAnimationFrame(step);
+}
+
 function updateMetricData(prefix, value) {
     // Cache lookup on first run
     if (!metricCache[prefix].text) {
@@ -23,9 +36,11 @@ function updateMetricData(prefix, value) {
 
     // Optimization: Skip DOM updates if value hasn't changed
     if (cache.last === value) return;
+    
+    // Animate from last value to new value
+    animateNumber(cache.text, cache.last || 0, value, 800);
     cache.last = value;
 
-    cache.text.textContent = `${value}%`;
     cache.bar.style.width = `${value}%`;
     
     const color = getColor(value);
