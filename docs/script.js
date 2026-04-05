@@ -1,9 +1,13 @@
-/* --- Metrics Configuration --- */
 const metricCache = {
     cpu: { text: null, bar: null, last: null },
     memory: { text: null, bar: null, last: null },
     disk: { text: null, bar: null, last: null }
 };
+
+// --- Demo Mode Support ---
+const isDemo = window.location.hostname.includes('github.io') || 
+               window.location.protocol === 'file:' || 
+               window.location.pathname.includes('/docs/');
 
 function getMetricColor(prefix) {
     const colors = {
@@ -234,6 +238,18 @@ document.addEventListener('DOMContentLoaded', () => {
     chartDataMap.cpu    = cpuData;
     chartDataMap.memory = memoryData;
     chartDataMap.disk   = diskData;
+
+    // Demo Mode: Force show dashboard immediately
+    if (isDemo) {
+        console.log('[DEMO] Static mode detected. Showing dashboard immediately.');
+        const landing = document.getElementById('landing-section');
+        const dashboard = document.getElementById('dashboard-section');
+        if (landing) landing.style.display = 'none';
+        if (dashboard) {
+            dashboard.style.display = 'block';
+            dashboard.classList.add('visible');
+        }
+    }
 });
 
 function initScrollAnimations() {
