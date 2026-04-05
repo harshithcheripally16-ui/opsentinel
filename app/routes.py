@@ -17,8 +17,13 @@ main = Blueprint("main", __name__)
 
 
 @main.route("/")
+def index():
+    return redirect(url_for("main.dashboard"))
+
+
+@main.route("/dashboard")
 @login_required
-def home():
+def dashboard():
     return render_template("index.html")
 
 

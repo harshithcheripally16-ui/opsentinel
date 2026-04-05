@@ -50,7 +50,7 @@ def _fail(error, template):
 def signup():
     if session.get("user"):
         print(f"[AUTH] User already authenticated: {session['user']}, redirecting to dashboard.")
-        return redirect(url_for("main.home"))
+        return redirect(url_for("main.dashboard"))
 
     if request.method == "POST":
         username, password = _parse_form()
@@ -69,7 +69,7 @@ def signup():
 def login():
     if session.get("user"):
         print(f"[AUTH] User already authenticated: {session['user']}, redirecting to dashboard.")
-        return redirect(url_for("main.home"))
+        return redirect(url_for("main.dashboard"))
 
     if request.method == "POST":
         username, password = _parse_form()
@@ -81,7 +81,7 @@ def login():
         if user and check_password_hash(user["password"], password):
             print(f"[AUTH] Authentication successful for: {username}")
             session["user"] = username
-            return redirect(url_for("main.home"))
+            return redirect(url_for("main.dashboard"))
 
         return _fail("Invalid username or password.", "login.html")
 
