@@ -38,6 +38,7 @@ function hidePreloader() {
     
     const preloader = document.getElementById('preloader');
     if (preloader) {
+        console.log('[Opsentinel Trace] Preloader dismissal triggered.');
         preloader.style.opacity = '0';
         setTimeout(() => preloader.style.display = 'none', 500);
     }
@@ -106,6 +107,7 @@ function setOnlineUI() {
 
 function updateMetrics() {
     try {
+        console.log('[Opsentinel Trace] Simulation: Generating telemetry batch...');
         // STANDALONE DEMO: Realistic metric simulation (drifting)
         const drift = (val, min, max) => {
             const change = (Math.random() * 10) - 5; // -5% to +5%
@@ -130,6 +132,7 @@ function updateMetrics() {
         
         evaluateLogs(data);
         updateAlertBanner(data);
+        console.log('[Opsentinel Trace] Simulation: Telemetry generation complete.');
     } catch (error) {
         console.error('Failed to update metrics:', error);
     } finally {

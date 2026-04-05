@@ -35,6 +35,7 @@ function hidePreloader() {
     
     const preloader = document.getElementById('preloader');
     if (preloader) {
+        console.log('[Opsentinel Trace] Preloader dismissal triggered.');
         preloader.style.opacity = '0';
         setTimeout(() => preloader.style.display = 'none', 500);
     }
@@ -125,11 +126,13 @@ function generateMockData() {
 async function updateMetrics() {
     let data = null;
     try {
+        console.log('[Opsentinel Trace] Fetching latest telemetry batch...');
         const response = await fetch('/api/metrics');
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         
         const res = await response.json();
         data = res.data; 
+        console.log('[Opsentinel Trace] Telemetry received successfully.');
         setOnlineUI();
     } catch (error) {
         console.error('Failed to fetch metrics, using mock data:', error);
