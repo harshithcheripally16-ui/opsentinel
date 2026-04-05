@@ -13,6 +13,15 @@
 
 ---
 
+## 🌐 Live Demo
+
+Preview the **Opsentinel** dashboard instantly:
+[**Launch Live Demo**](https://yourusername.github.io/Opsentinel/)
+
+*Note: The live demo uses simulated metrics and is hosted via GitHub Pages.*
+
+---
+
 ## ⚡ Features
 
 - **Real-Time Metrics**: Instant monitoring of CPU, RAM, and Disk using the `psutil` engine.
@@ -77,6 +86,7 @@ To get started immediately after installation:
 
 ```text
 app/          # Core Python Logic (Auth, Routes, DB, Utils)
+docs/         # Static Frontend Demo (GitHub Pages Hosting)
 static/       # CSS & JavaScript Assets
 templates/    # Jinja2 Layouts & UI Components
 run.py        # Canonical CLI Entry Point
