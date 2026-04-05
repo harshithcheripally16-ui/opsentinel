@@ -24,6 +24,26 @@ function animateNumber(element, start, end, duration) {
     window.requestAnimationFrame(step);
 }
 
+let initialLoadDone = false;
+function hidePreloader() {
+    if (initialLoadDone) return;
+    initialLoadDone = true;
+    
+    const preloader = document.getElementById('preloader');
+    if (preloader) {
+        preloader.style.opacity = '0';
+        setTimeout(() => preloader.style.display = 'none', 500);
+    }
+    
+    // Trigger entrance animations exactly once
+    if (typeof initScrollAnimations === 'function') {
+        initScrollAnimations();
+    }
+}
+
+// Failsafe: Hide preloader after 3s even if metrics take long
+setTimeout(hidePreloader, 3000);
+
 function getMetricColor(prefix) {
     const colors = {
         'cpu': '#3b82f6',
@@ -109,6 +129,8 @@ async function updateMetrics() {
     } catch (error) {
         console.error('Failed to fetch metrics:', error);
         setOfflineUI();
+    } finally {
+        hidePreloader();
     }
 }
 
@@ -214,18 +236,6 @@ document.addEventListener('DOMContentLoaded', () => {
     chartDataMap.cpu    = cpuData;
     chartDataMap.memory = memoryData;
     chartDataMap.disk   = diskData;
-    
-    // Page Load Sequence
-    window.addEventListener('load', () => {
-        const preloader = document.getElementById('preloader');
-        if (preloader) {
-            preloader.style.opacity = '0';
-            setTimeout(() => preloader.style.display = 'none', 500);
-        }
-        
-        // Trigger entrance animations
-        initScrollAnimations();
-    });
 });
 
 function initScrollAnimations() {

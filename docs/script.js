@@ -27,6 +27,26 @@ function animateNumber(element, start, end, duration) {
     window.requestAnimationFrame(step);
 }
 
+let initialLoadDone = false;
+function hidePreloader() {
+    if (initialLoadDone) return;
+    initialLoadDone = true;
+    
+    const preloader = document.getElementById('preloader');
+    if (preloader) {
+        preloader.style.opacity = '0';
+        setTimeout(() => preloader.style.display = 'none', 500);
+    }
+    
+    // Trigger entrance animations exactly once
+    if (typeof initScrollAnimations === 'function') {
+        initScrollAnimations();
+    }
+}
+
+// Failsafe: Hide preloader after 3s even if metrics take long
+setTimeout(hidePreloader, 3000);
+
 function updateMetricData(prefix, value) {
     // Cache lookup on first run
     if (!metricCache[prefix].text) {
@@ -81,30 +101,36 @@ function setOnlineUI() {
 }
 
 function updateMetrics() {
-    // STANDALONE DEMO: Realistic metric simulation (drifting)
-    const drift = (val, min, max) => {
-        const change = (Math.random() * 10) - 5; // -5% to +5%
-        return Math.floor(Math.max(min, Math.min(max, (val || (min + max) / 2) + change)));
-    };
+    try {
+        // STANDALONE DEMO: Realistic metric simulation (drifting)
+        const drift = (val, min, max) => {
+            const change = (Math.random() * 10) - 5; // -5% to +5%
+            return Math.floor(Math.max(min, Math.min(max, (val || (min + max) / 2) + change)));
+        };
 
-    const data = {
-        cpu: drift(metricCache.cpu.last, 10, 90),
-        memory: drift(metricCache.memory.last, 30, 85),
-        disk: drift(metricCache.disk.last, 40, 50)
-    };
-    
-    setOnlineUI();
-    
-    updateMetricData('cpu', data.cpu);
-    updateMetricData('memory', data.memory);
-    updateMetricData('disk', data.disk);
-    updateChartLabels();
-    updateChart('cpu', data.cpu);
-    updateChart('memory', data.memory);
-    updateChart('disk', data.disk);
-    
-    evaluateLogs(data);
-    updateAlertBanner(data);
+        const data = {
+            cpu: drift(metricCache.cpu.last, 10, 90),
+            memory: drift(metricCache.memory.last, 30, 85),
+            disk: drift(metricCache.disk.last, 40, 50)
+        };
+        
+        setOnlineUI();
+        
+        updateMetricData('cpu', data.cpu);
+        updateMetricData('memory', data.memory);
+        updateMetricData('disk', data.disk);
+        updateChartLabels();
+        updateChart('cpu', data.cpu);
+        updateChart('memory', data.memory);
+        updateChart('disk', data.disk);
+        
+        evaluateLogs(data);
+        updateAlertBanner(data);
+    } catch (error) {
+        console.error('Failed to update metrics:', error);
+    } finally {
+        hidePreloader();
+    }
 }
 
 // Initial fetch/generate
@@ -208,18 +234,6 @@ document.addEventListener('DOMContentLoaded', () => {
     chartDataMap.cpu    = cpuData;
     chartDataMap.memory = memoryData;
     chartDataMap.disk   = diskData;
-    
-    // Page Load Sequence
-    window.addEventListener('load', () => {
-        const preloader = document.getElementById('preloader');
-        if (preloader) {
-            preloader.style.opacity = '0';
-            setTimeout(() => preloader.style.display = 'none', 500);
-        }
-        
-        // Trigger entrance animations
-        initScrollAnimations();
-    });
 });
 
 function initScrollAnimations() {
