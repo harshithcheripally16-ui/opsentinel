@@ -186,6 +186,83 @@
         .metric-value.cpu { color: var(--accent-green); }
         .metric-value.memory { color: var(--accent-purple); }
         .metric-value.disk { color: var(--accent-amber); }
+
+        /* How It Works Section */
+        .how-it-works {
+            padding: 2rem 1.5rem 6rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .steps-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 2rem;
+            margin-top: 4rem;
+            position: relative;
+        }
+
+        .step-item {
+            flex: 1;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .step-number {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--bg-card);
+            border: 1px solid var(--accent-green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            font-size: 1.25rem;
+            color: var(--accent-green);
+            box-shadow: 0 0 20px rgba(74, 222, 128, 0.2);
+            z-index: 2;
+        }
+
+        .step-content h4 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.1rem;
+            margin-bottom: 0.75rem;
+            color: var(--text-primary);
+        }
+
+        .step-content p {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        /* Connecting lines for desktop */
+        @media (min-width: 769px) {
+            .steps-container::before {
+                content: '';
+                position: absolute;
+                top: 25px;
+                left: 10%;
+                right: 10%;
+                height: 1px;
+                background: linear-gradient(to right, transparent, var(--border), transparent);
+                z-index: 1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .steps-container {
+                flex-direction: column;
+                gap: 3rem;
+            }
+            .steps-container::before { display: none; }
+        }
     </style>
 </head>
 
@@ -272,6 +349,46 @@
                 </div>
                 <h3>Responsive Design</h3>
                 <p>Full monitoring capability on any screen size, from mobile to ultra-wide.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="how-it-works">
+        <h2 class="section-title">How Opsentinel Works</h2>
+        <p class="subtitle">The lifecycle of your system telemetry</p>
+        
+        <div class="steps-container">
+            <div class="step-item">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h4>Collect Metrics</h4>
+                    <p>Standardized probes gather raw CPU, Memory, and Disk data every 2 seconds.</p>
+                </div>
+            </div>
+
+            <div class="step-item">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h4>Process Data</h4>
+                    <p>Telemetric data is parsed and normalized for standardized dashboard rendering.</p>
+                </div>
+            </div>
+
+            <div class="step-item">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h4>Display Dashboard</h4>
+                    <p>Real-time visual graphs and progress bars provide instant system visibility.</p>
+                </div>
+            </div>
+
+            <div class="step-item">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <h4>Trigger Alerts</h4>
+                    <p>Critical threshold breaches automatically generate logs and push notifications.</p>
+                </div>
             </div>
         </div>
     </section>
