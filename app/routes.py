@@ -24,15 +24,20 @@ def home():
 
 @main.route("/metrics")
 def metrics():
-    cpu    = psutil.cpu_percent(interval=1)
-    memory = psutil.virtual_memory().percent
-    disk   = psutil.disk_usage("/").percent
+    try:
+        cpu    = psutil.cpu_percent(interval=1)
+        memory = psutil.virtual_memory().percent
+        disk   = psutil.disk_usage("/").percent
 
-    issues = get_high_usage_issues(cpu, memory, disk)
-    if issues and should_send_alert():
-        send_telegram_alert(f"🚨 High resource usage detected: {', '.join(issues)}")
+        issues = get_high_usage_issues(cpu, memory, disk)
+        if issues and should_send_alert():
+            send_telegram_alert(f"🚨 High resource usage detected: {', '.join(issues)}")
 
-    return jsonify(ok_response({"cpu": cpu, "memory": memory, "disk": disk}))
+        return jsonify(ok_response({"cpu": cpu, "memory": memory, "disk": disk}))
+    except Exception as e:
+        print(f"[METRICS ERROR] Failed to gather telemetry: {e}")
+        # Failsafe: Return zeroed metrics to prevent dashboard crash
+        return jsonify(ok_response({"cpu": 0, "memory": 0, "disk": 0}))
 
 
 @main.route("/api/system-info")
