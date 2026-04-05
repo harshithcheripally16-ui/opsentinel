@@ -144,6 +144,31 @@ function updateMetrics() {
     }
 }
 
+async function fetchSystemInfo() {
+    try {
+        console.log('[Opsentinel Trace] Simulation: Loading system information...');
+        
+        // Standalone simulation doesn't use real fetch
+        const data = {
+            os: "Linux Distributed Node",
+            hostname: "demo-hub-01",
+            cores: 8
+        };
+        
+        const osEl = document.getElementById('info-os');
+        const hostnameEl = document.getElementById('info-hostname');
+        const coresEl = document.getElementById('info-cores');
+        
+        if (osEl) osEl.textContent = data.os;
+        if (hostnameEl) hostnameEl.textContent = data.hostname;
+        if (coresEl) coresEl.textContent = data.cores;
+        
+        console.log('[Opsentinel Trace] Simulation: System information loaded.');
+    } catch (error) {
+        console.error('Failed to load simulated info:', error);
+    }
+}
+
 
 /* --- Chart.js Configuration --- */
 const maxDataPoints = 20;
@@ -391,6 +416,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Initial Flow ---
+    // Fetch static system info once
+    fetchSystemInfo();
+
     // Initial fetch/generate
     updateMetrics();
 

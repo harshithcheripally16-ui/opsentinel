@@ -1,5 +1,9 @@
 from flask import Blueprint, jsonify, render_template, request, session, redirect, url_for
 import psutil
+import platform
+import socket
+import platform
+import socket
 
 from app.utils import (
     get_high_usage_issues,
@@ -29,6 +33,16 @@ def metrics():
         send_telegram_alert(f"🚨 High resource usage detected: {', '.join(issues)}")
 
     return jsonify(ok_response({"cpu": cpu, "memory": memory, "disk": disk}))
+
+
+@main.route("/api/system-info")
+def system_info():
+    info = {
+        "os": f"{platform.system()} {platform.release()}",
+        "hostname": socket.gethostname(),
+        "cores": psutil.cpu_count(logical=True)
+    }
+    return jsonify(ok_response(info))
 
 
 @main.route("/alert", methods=["POST"])

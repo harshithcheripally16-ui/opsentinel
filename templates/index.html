@@ -81,6 +81,26 @@
             <div class="log-entry info">[System] Log listener active. Metrics pipeline online.</div>
         </div>
     </div>
+
+    <!-- System Information Card -->
+    <div class="card system-info-card">
+        <h2>System Information</h2>
+        <p class="subtitle">Platform and hardware metadata.</p>
+        <div class="info-grid">
+            <div class="info-item">
+                <span class="label">OS Name</span>
+                <span class="value" id="info-os">--</span>
+            </div>
+            <div class="info-item">
+                <span class="label">Hostname</span>
+                <span class="value" id="info-hostname">--</span>
+            </div>
+            <div class="info-item">
+                <span class="label">CPU Cores</span>
+                <span class="value" id="info-cores">--</span>
+            </div>
+        </div>
+    </div>
 </div>
 
 <style>
@@ -105,7 +125,7 @@
 
     .secondary-grid {
         display: grid;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr 1fr 1fr;
         gap: 1.5rem;
     }
 
@@ -143,6 +163,34 @@
         .logs-panel {
             text-align: center;
         }
+    }
+
+    .info-grid {
+        margin-top: 1.25rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+    }
+
+    .info-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .info-item .label {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        font-family: 'Inter';
+    }
+
+    .info-item .value {
+        font-size: 0.9rem;
+        font-weight: 500;
+        color: var(--text-secondary);
+        font-family: 'Outfit';
     }
 
     /* Metric coloring */

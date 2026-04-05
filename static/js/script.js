@@ -159,6 +159,29 @@ async function updateMetrics() {
     }
 }
 
+async function fetchSystemInfo() {
+    try {
+        console.log('[Opsentinel Trace] Fetching system information...');
+        const response = await fetch('/api/system-info');
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        
+        const res = await response.json();
+        const data = res.data;
+        
+        const osEl = document.getElementById('info-os');
+        const hostnameEl = document.getElementById('info-hostname');
+        const coresEl = document.getElementById('info-cores');
+        
+        if (osEl) osEl.textContent = data.os;
+        if (hostnameEl) hostnameEl.textContent = data.hostname;
+        if (coresEl) coresEl.textContent = data.cores;
+        
+        console.log('[Opsentinel Trace] System information loaded.');
+    } catch (error) {
+        console.error('Failed to fetch system info:', error);
+    }
+}
+
 
 /* --- Chart.js Configuration --- */
 const maxDataPoints = 20;
@@ -410,6 +433,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Initial Flow ---
+    // Fetch static system info once
+    fetchSystemInfo();
+    
     // Start the self-scheduling telemetry cycle
     updateMetrics();
 
