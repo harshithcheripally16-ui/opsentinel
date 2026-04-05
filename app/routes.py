@@ -24,6 +24,7 @@ def home():
 
 @main.route("/metrics")
 def metrics():
+    print("[METRICS] Fetching latest telemetry batch...")
     try:
         cpu    = psutil.cpu_percent(interval=1)
         memory = psutil.virtual_memory().percent
@@ -33,9 +34,10 @@ def metrics():
         if issues and should_send_alert():
             send_telegram_alert(f"🚨 High resource usage detected: {', '.join(issues)}")
 
+        print(f"[METRICS] Returned successfully. CPU: {cpu}%, MEM: {memory}%, DSK: {disk}%")
         return jsonify(ok_response({"cpu": cpu, "memory": memory, "disk": disk}))
     except Exception as e:
-        print(f"[METRICS ERROR] Failed to gather telemetry: {e}")
+        print(f"[METRICS ERROR] Exception during telemetry fetch: {e}")
         # Failsafe: Return zeroed metrics to prevent dashboard crash
         return jsonify(ok_response({"cpu": 0, "memory": 0, "disk": 0}))
 
