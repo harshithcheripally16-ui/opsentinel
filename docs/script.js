@@ -5,10 +5,13 @@ const metricCache = {
     disk: { text: null, bar: null, last: null }
 };
 
-function getColor(value) {
-    if (value < 50) return '#4ade80'; // accent-green
-    if (value <= 80) return '#fbbf24'; // accent-amber
-    return '#ef4444'; // accent-red
+function getMetricColor(prefix) {
+    const colors = {
+        'cpu': '#3b82f6',
+        'memory': '#f97316',
+        'disk': '#22c55e'
+    };
+    return colors[prefix] || '#94a3b8';
 }
 
 function animateNumber(element, start, end, duration) {
@@ -43,7 +46,8 @@ function updateMetricData(prefix, value) {
 
     cache.bar.style.width = `${value}%`;
     
-    const color = getColor(value);
+    // Use fixed identity color for bars/text to match SaaS identity
+    const color = getMetricColor(prefix);
     cache.text.style.color = color;
     cache.bar.style.backgroundColor = color;
 }
@@ -197,9 +201,9 @@ let charts = {};
 const chartDataMap = {};
 
 document.addEventListener('DOMContentLoaded', () => {
-    charts.cpu    = createChart('cpuChart',    'CPU Usage',    '#4ade80', cpuData);
-    charts.memory = createChart('memoryChart', 'Memory Usage', '#c084fc', memoryData); 
-    charts.disk   = createChart('diskChart',   'Disk Usage',   '#fbbf24', diskData); 
+    charts.cpu    = createChart('cpuChart',    'CPU Usage',    '#3b82f6', cpuData);
+    charts.memory = createChart('memoryChart', 'Memory Usage', '#f97316', memoryData); 
+    charts.disk   = createChart('diskChart',   'Disk Usage',   '#22c55e', diskData); 
 
     chartDataMap.cpu    = cpuData;
     chartDataMap.memory = memoryData;
