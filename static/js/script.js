@@ -204,7 +204,41 @@ document.addEventListener('DOMContentLoaded', () => {
     chartDataMap.cpu    = cpuData;
     chartDataMap.memory = memoryData;
     chartDataMap.disk   = diskData;
+    
+    // Page Load Sequence
+    window.addEventListener('load', () => {
+        const preloader = document.getElementById('preloader');
+        if (preloader) {
+            preloader.style.opacity = '0';
+            setTimeout(() => preloader.style.display = 'none', 500);
+        }
+        
+        // Trigger entrance animations
+        initScrollAnimations();
+    });
 });
+
+function initScrollAnimations() {
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('in-view');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    // Track all sections and cards
+    document.querySelectorAll('.hero-section, .features-section, .how-it-works, .card, .content-header').forEach(el => {
+        el.classList.add('reveal');
+        observer.observe(el);
+    });
+}
 
 function updateChartLabels() {
     const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
