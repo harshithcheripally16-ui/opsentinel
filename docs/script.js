@@ -106,6 +106,7 @@ function setOnlineUI() {
 }
 
 function updateMetrics() {
+    let data = null;
     try {
         console.log('[Opsentinel Trace] Simulation: Generating telemetry batch...');
         // STANDALONE DEMO: Realistic metric simulation (drifting)
@@ -114,11 +115,13 @@ function updateMetrics() {
             return Math.floor(Math.max(min, Math.min(max, (val || (min + max) / 2) + change)));
         };
 
-        const data = {
+        data = {
             cpu: drift(metricCache.cpu.last, 10, 90),
             memory: drift(metricCache.memory.last, 30, 85),
             disk: drift(metricCache.disk.last, 40, 50)
         };
+        
+        if (!data) throw new Error("Simulation engine failed to generate data.");
         
         setOnlineUI();
         
@@ -134,7 +137,9 @@ function updateMetrics() {
         updateAlertBanner(data);
         console.log('[Opsentinel Trace] Simulation: Telemetry generation complete.');
     } catch (error) {
-        console.error('Failed to update metrics:', error);
+        console.error('[Opsentinel Trace] Simulation failure, using fallback data:', error);
+        data = generateMockData(); // Deep fallback
+        setOfflineUI();
     } finally {
         hidePreloader();
         

@@ -127,15 +127,17 @@ async function updateMetrics() {
     let data = null;
     try {
         console.log('[Opsentinel Trace] Fetching latest telemetry batch...');
-        const response = await fetch('/api/metrics');
+        const response = await fetch('/metrics'); // Aligned with backend route
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         
         const res = await response.json();
+        if (!res || !res.data) throw new Error('Invalid telemetry payload received.');
+        
         data = res.data; 
         console.log('[Opsentinel Trace] Telemetry received successfully.');
         setOnlineUI();
     } catch (error) {
-        console.error('Failed to fetch metrics, using mock data:', error);
+        console.error('[Opsentinel Trace] Telemetry failure, using mock data:', error);
         data = generateMockData();
         setOfflineUI(); // Indicates mock mode in the subtitle
     } finally {
