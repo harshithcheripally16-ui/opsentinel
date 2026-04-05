@@ -58,6 +58,14 @@
     
     --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.4);
     --glass-shine: inset 0 1px 1px rgba(255, 255, 255, 0.05);
+
+    /* --- Spacing Scale --- */
+    --space-xs: 8px;
+    --space-sm: 12px;
+    --space-md: 16px;
+    --space-lg: 24px;
+    --space-xl: 32px;
+    --space-xxl: 48px;
 }
 
 * {
@@ -82,7 +90,7 @@ body {
         #080a0f;
     color: var(--text-primary);
     min-height: 100vh;
-    line-height: 1.5;
+    line-height: 1.65;
 }
 
 /* --- Entrance & Scroll Animations --- */
@@ -102,12 +110,16 @@ h1, h2, h3, .brand-name {
     font-family: 'Outfit', sans-serif;
 }
 
+h1 { margin-bottom: var(--space-lg); }
+h2 { margin-bottom: var(--space-md); }
+h3 { margin-bottom: var(--space-sm); }
+
 /* --- Layout Wrappers --- */
 .content-wrapper {
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
-    padding: 2rem 1.5rem;
+    padding: var(--space-xl) var(--space-lg);
     flex-grow: 1;
 }
 
@@ -215,7 +227,7 @@ h1, h2, h3, .brand-name {
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid var(--border);
     border-radius: 16px;
-    padding: 2rem;
+    padding: var(--space-lg);
     max-width: 100%;
     box-sizing: border-box;
     box-shadow: var(--shadow-lg), var(--glass-shine);
@@ -244,11 +256,11 @@ h1, h2, h3, .brand-name {
 
 .auth-header {
     text-align: center;
-    margin-bottom: 2rem;
+    margin-bottom: var(--space-xl);
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1rem;
+    gap: var(--space-md);
 }
 
 /* --- Metrics & Dashboard --- */
@@ -273,7 +285,7 @@ h1, h2, h3, .brand-name {
     text-transform: uppercase;
     letter-spacing: 0.05em;
     color: var(--text-secondary);
-    margin-bottom: 0.75rem;
+    margin-bottom: var(--space-sm);
 }
 
 .metric-value {
@@ -284,7 +296,7 @@ h1, h2, h3, .brand-name {
 }
 
 .progress-container {
-    margin-top: 1.5rem;
+    margin-top: var(--space-lg);
     height: 6px;
     background: var(--bg-input);
     border-radius: 3px;
@@ -346,19 +358,20 @@ h1, h2, h3, .brand-name {
 h2.section-title {
     font-size: clamp(1.25rem, 5vw, 1.75rem);
     font-weight: 700;
-    margin-bottom: 0.5rem;
+    margin-bottom: var(--space-md);
 }
 
 .subtitle {
     font-size: 0.875rem;
     color: var(--text-secondary);
+    margin-bottom: var(--space-md);
 }
 
 .form-group {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
-    margin-bottom: 1.25rem;
+    gap: var(--space-xs);
+    margin-bottom: var(--space-lg);
 }
 
 label {
@@ -367,6 +380,7 @@ label {
     color: var(--text-muted);
     text-transform: uppercase;
     letter-spacing: 0.05em;
+    margin-bottom: var(--space-xs);
 }
 
 input[type="text"],
@@ -468,10 +482,11 @@ input:focus {
 }
 
 .log-entry {
-    padding: 0.6rem 0.8rem;
+    padding: var(--space-sm) var(--space-md);
     border-radius: 6px;
     background: var(--bg-input);
     border-left: 3px solid var(--text-muted);
+    line-height: 1.6;
 }
 
 .log-entry.critical { border-left-color: var(--accent-red); color: #fca5a5; }
@@ -489,7 +504,7 @@ input:focus {
     background: var(--bg-input);
     border: 1px solid var(--border);
     border-radius: 8px;
-    padding: 0.75rem 1rem;
+    padding: var(--space-sm) var(--space-md);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -536,9 +551,8 @@ footer {
 /* --- Responsive Adaptations --- */
 
 @media (max-width: 1024px) {
-    .content-wrapper { padding: 1.5rem 1rem; }
+    .content-wrapper { padding: var(--space-lg) var(--space-md); }
     .metric-value { font-size: 2.5rem; }
-    .card { padding: 1.5rem; }
 }
 
 @media (max-width: 768px) {
@@ -582,10 +596,18 @@ footer {
     }
 
     .auth-card {
-        padding: 1.5rem;
+        padding: var(--space-lg);
         box-shadow: none; /* simplifies UI on mobile */
         border: none;
         background: transparent;
+    }
+
+    h2.section-title {
+        font-size: 1.25rem;
+    }
+
+    .card {
+        padding: var(--space-md);
     }
 
     /* Hero Mobile Optimization */
@@ -612,7 +634,7 @@ html { scroll-behavior: smooth; }
         radial-gradient(circle at 50% 40%, rgba(74, 222, 128, 0.06) 0%, transparent 60%),
         radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.03) 0%, transparent 40%);
     border-bottom: 1px solid var(--border);
-    margin-bottom: 2rem;
+    margin-bottom: var(--space-xxl);
 }
 
 .hero-title {

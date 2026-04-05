@@ -209,7 +209,13 @@ document.addEventListener('DOMContentLoaded', () => {
             },
             x: { 
                 display: true,
-                ticks: { font: { size: 9, family: 'Inter' }, color: '#64748b', maxRotation: 45, minRotation: 45 },
+                ticks: { 
+                    font: { size: 9, family: 'Inter' }, 
+                    color: '#64748b', 
+                    maxRotation: 45, 
+                    minRotation: 45,
+                    maxTicksLimit: 6 // Prevents overcrowding on mobile
+                },
                 grid: { color: 'rgba(255, 255, 255, 0.03)' }
             }
         },
