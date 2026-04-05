@@ -106,30 +106,44 @@ function setOnlineUI() {
     }
 }
 
+function generateMockData() {
+    const drift = (val, min, max) => {
+        const change = (Math.random() * 10) - 5;
+        return Math.floor(Math.max(min, Math.min(max, (val || (min + max) / 2) + change)));
+    };
+    return {
+        cpu: drift(metricCache.cpu.last, 10, 90),
+        memory: drift(metricCache.memory.last, 30, 85),
+        disk: drift(metricCache.disk.last, 40, 50)
+    };
+}
+
 async function updateMetrics() {
+    let data = null;
     try {
-        const response = await fetch('/metrics');
+        const response = await fetch('/api/metrics');
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         
         const res = await response.json();
-        const data = res.data; 
-        
+        data = res.data; 
         setOnlineUI();
-        
-        updateMetricData('cpu', data.cpu);
-        updateMetricData('memory', data.memory);
-        updateMetricData('disk', data.disk);
-        updateChartLabels();
-        updateChart('cpu', data.cpu);
-        updateChart('memory', data.memory);
-        updateChart('disk', data.disk);
-        
-        evaluateLogs(data);
-        updateAlertBanner(data);
     } catch (error) {
-        console.error('Failed to fetch metrics:', error);
-        setOfflineUI();
+        console.error('Failed to fetch metrics, using mock data:', error);
+        data = generateMockData();
+        setOfflineUI(); // Indicates mock mode in the subtitle
     } finally {
+        if (data) {
+            updateMetricData('cpu', data.cpu);
+            updateMetricData('memory', data.memory);
+            updateMetricData('disk', data.disk);
+            updateChartLabels();
+            updateChart('cpu', data.cpu);
+            updateChart('memory', data.memory);
+            updateChart('disk', data.disk);
+            
+            evaluateLogs(data);
+            updateAlertBanner(data);
+        }
         hidePreloader();
     }
 }
