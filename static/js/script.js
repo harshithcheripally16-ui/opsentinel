@@ -114,14 +114,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function generateMockData() {
-        const drift = (val, min, max) => {
-            const change = (Math.random() * 10) - 5;
-            return Math.floor(Math.max(min, Math.min(max, (val || (min + max) / 2) + change)));
-        };
+        // FOR VISUAL CLEANSE: Force healthy metrics
         return {
-            cpu: drift(metricCache.cpu.last, 10, 90),
-            memory: drift(metricCache.memory.last, 30, 85),
-            disk: drift(metricCache.disk.last, 40, 50)
+            cpu: 24,
+            memory: 38,
+            disk: 42
         };
     }
 
@@ -384,13 +381,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateAlertBanner(data) {
         const banner = document.getElementById('high-usage-alert');
         if (!banner) return;
-        const items = getHighUsageItems(data);
-        if (items.length > 0) {
-            banner.textContent = `CRITICAL: ${items.join('/')} OVERLOAD DETECTED`;
-            banner.style.display = 'block';
-        } else {
-            banner.style.display = 'none';
-        }
+        banner.style.display = 'none'; // FOR VISUAL CLEANSE: Always hide
     }
 
 

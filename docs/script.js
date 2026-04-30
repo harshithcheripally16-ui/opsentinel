@@ -124,8 +124,8 @@ document.addEventListener('DOMContentLoaded', () => {
             };
 
             data = {
-                cpu: drift(metricCache.cpu.last, 10, 90),
-                memory: drift(metricCache.memory.last, 30, 85),
+                cpu: drift(metricCache.cpu.last, 10, 40),
+                memory: drift(metricCache.memory.last, 30, 50),
                 disk: drift(metricCache.disk.last, 40, 50)
             };
             
@@ -377,12 +377,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const banner = document.getElementById('high-usage-alert');
         if (!banner) return;
         const items = getHighUsageItems(data);
-        if (items.length > 0) {
-            banner.textContent = `CRITICAL: ${items.join('/')} OVERLOAD DETECTED`;
-            banner.style.display = 'block';
-        } else {
-            banner.style.display = 'none';
-        }
+        banner.style.display = 'none'; // FOR VISUAL CLEANSE: Always hide
     }
 
 
